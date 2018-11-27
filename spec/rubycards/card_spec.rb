@@ -110,15 +110,20 @@ describe Card do
         expect(card.inspect).to eq card.short
       end
     end
+
   end
 
   describe '#joker' do
     it 'should set suit and rank correctly' do
       joker1 = Card.new('Joker', 'Joker')
-      joker2 = Card.new(nil, nil)
+      expect(joker1.suit).to eq 'Joker'
+    end
+  end
 
-      expect(joker1.suit).to match 'Joker'
-      expect(joker2.suit).to match 'Joker'
+  describe '#blank' do
+    it 'should set suit and rank correctly' do
+      blank = Card.new(nil, nil)
+      expect(blank.suit).to eq ' '
     end
   end
 
