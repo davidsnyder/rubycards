@@ -19,10 +19,11 @@ module RubyCards
     # @param suit [String] The suit of the card
     # options: 
     #  aces_high 
+    #  joker 
     # @return [Card] The constructed card
-    def initialize(rank = 'Ace', suit = 'Spades', aces_high: true)
-      @rank = rank_to_i(rank)
-      @suit = suit_to_i(suit)
+    def initialize(rank = 'Ace', suit = 'Spades', aces_high: true, joker: false)
+      @rank = joker ? 0 : rank_to_i(rank)
+      @suit = joker ? nil : suit_to_i(suit)
       @aces_high = aces_high
     end
 
@@ -35,7 +36,7 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        h = { 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
+        h = { 0 => 'Joker', 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
         h[@rank] && short ? h[@rank][0] : h[@rank]
       end
     end
@@ -55,6 +56,8 @@ module RubyCards
           glyph ? HEART.red : 'Hearts'
         when 4
           glyph ? SPADE.black.bold : 'Spades'
+        else 
+          'Joker'
       end
     end
 
