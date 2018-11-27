@@ -103,6 +103,7 @@ module RubyCards
       #   read from left to right, top to bottom
       # X means place a glyph, _ means clear the space
       case @rank
+        when 0;  pattern = 'X_________X'
         when 2;  pattern = '_X_______X_'
         when 3;  pattern = '_X__X____X_'
         when 4;  pattern = 'X_X_____X_X'

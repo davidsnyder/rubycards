@@ -88,15 +88,15 @@ describe Card do
 
   describe '#display' do
     BORDER_COUNT = 18 # the number of unicode characters on the border
-    RANKS = [*2..10, 'Jack', 'Queen', 'King', 'Ace']
+    RANKS = [*2..10, 'Jack', 'Queen', 'King', 'Ace', 'Joker']
 
     it 'should have the correct number of glyphs' do
       RANKS.each do |rank|
         card = Card.new(rank, 'hearts')   # rspec doesn't play nice with dark cards
         glyph_count = card.to_s.scan(/[^\x00-\x7F]/).count
 
-        if (2..10).include? card.rank.to_i
-          expect(glyph_count).to eq card.rank.to_i + BORDER_COUNT
+        if (2..10).include? card.to_i
+          expect(glyph_count).to eq card.to_i + BORDER_COUNT
         else
           expect(glyph_count).to eq 2 + BORDER_COUNT
         end
@@ -115,12 +115,10 @@ describe Card do
   describe '#joker' do
     it 'should set suit and rank correctly' do
       joker1 = Card.new('Joker', 'Joker')
-      joker2 = Card.new(nil,nil)
+      joker2 = Card.new(nil, nil)
 
       expect(joker1.suit).to match 'Joker'
       expect(joker2.suit).to match 'Joker'
-      expect(joker2.rank).to match 'Joker'
-      expect(joker2.rank(true)).to match 'JR'
     end
   end
 
