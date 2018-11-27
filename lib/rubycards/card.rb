@@ -17,8 +17,8 @@ module RubyCards
     #
     # @param rank [String, Integer] The rank of the card
     # @param suit [String] The suit of the card
-    # options: 
-    #  aces_high [Boolean] 
+    # options:
+    #  aces_high [Boolean]
     # @return [Card] The constructed card
     def initialize(rank = 'Ace', suit = 'Spades', aces_high: true)
       @rank = rank_to_i(rank, aces_high)
@@ -34,7 +34,7 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        return '' if @rank == 0 
+        return '' if @rank == 0
         h = { 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
         h[@rank] && short ? h[@rank][0] : h[@rank]
       end

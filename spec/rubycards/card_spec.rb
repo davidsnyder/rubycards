@@ -38,7 +38,7 @@ describe Card do
     let (:queen) { Card.new('Queen','Clubs') }
     let (:jack) { Card.new('Jack','Clubs') }
     let (:high_ace) { Card.new('Ace','Clubs', aces_high: true) }
-    let (:low_ace) { Card.new('Ace','Clubs', aces_high: false) } 
+    let (:low_ace) { Card.new('Ace','Clubs', aces_high: false) }
     let (:c2) { Card.new(2,'Diamonds') }
     let (:c2_heart) { Card.new(2,'Hearts') }
     let (:c4) { Card.new(4,'Spades') }
@@ -48,7 +48,7 @@ describe Card do
       expect(king).to be > jack
       expect(king).to eq king
       expect(king).to be < high_ace
-      expect(king).to be > low_ace      
+      expect(king).to be > low_ace
 
       expect(low_ace).to be < c2_heart
 

@@ -71,7 +71,7 @@ describe Deck do
 
   describe '#draw' do
     it 'draws a single card from the deck' do
-      first_card = deck.cards.first
+first_card = deck.cards.first
       cards_expected_after_draw = deck.cards[1..-1]
       expect(deck.draw).to be_same_as first_card
       expect(deck.cards).to eq cards_expected_after_draw
