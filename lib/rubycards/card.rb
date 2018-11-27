@@ -3,10 +3,7 @@ require 'colored'
 
 module RubyCards
 
-  # Class representation of a standard playing card. (French Design: 4 Suits, plus optional jokers)
-  # Rank/suit of nil will return a blank card (numerically, rank/suit are nil)
-  # Rank/suit of 'Joker' will return a joker (numerically, rank/suit are 0)
-  # Aces can be high or low, depending on value of aces_high boolean keyword in initializer
+  # Class representation of a standard playing card. (French Design: 52 cards)
   class Card
 
     include Comparable
@@ -21,7 +18,7 @@ module RubyCards
     # @param rank [String, Integer] The rank of the card
     # @param suit [String] The suit of the card
     # options:
-    #  aces_high [Boolean] Whether Aces are value 1 or 14
+    #  aces_high [Boolean]
     # @return [Card] The constructed card
     def initialize(rank = 'Ace', suit = 'Spades', aces_high: true)
       @rank = rank_to_i(rank, aces_high)
@@ -37,7 +34,6 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        return '' if @rank == nil
         if @rank == 0
           return short ? 'JR' : 'Joker'
         end
@@ -53,8 +49,6 @@ module RubyCards
     # @return [String] The string (of glyph) representation of the card's suit
     def suit(glyph = false)
       case @suit
-        when nil
-          ' '
         when 0
           glyph ? ' ' : 'Joker'
         when 1
@@ -121,8 +115,8 @@ module RubyCards
         when 8;  pattern = 'X_XX_XXXX_X'
         when 9;  pattern = 'X_XXXXXXX_X'
         when 10; pattern = 'XXXX_XXXXXX'
-        when 11..14; pattern = 'X_________X'
-        else pattern = 'X_________X'
+        when 11..14;
+          pattern = 'X_________X'
       end
 
       pattern.each_char do |c|
@@ -159,7 +153,7 @@ module RubyCards
         when /^(j|jack)/i;  11
         when '10';          10
         when '2'..'9';      rank
-        else nil
+        else 0
       end
     end
 
@@ -170,12 +164,11 @@ module RubyCards
     # @return [Integer] An integer representation of the suit (ordered)
     def suit_to_i(suit)
       case suit
-        when /^joker/i;   0
         when /^club/i;    1
         when /^diamond/i; 2
         when /^heart/i;   3
         when /^spade/i;   4
-        else nil
+        else 0
       end
     end
 
