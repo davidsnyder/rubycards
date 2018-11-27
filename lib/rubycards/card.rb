@@ -34,7 +34,9 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        return '' if @rank == 0
+        if @rank == 0
+          return short ? 'JR' : 'Joker'
+        end
         h = { 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
         h[@rank] && short ? h[@rank][0] : h[@rank]
       end
@@ -47,6 +49,8 @@ module RubyCards
     # @return [String] The string (of glyph) representation of the card's suit
     def suit(glyph = false)
       case @suit
+        when 0
+          glyph ? ' ' : 'Joker'
         when 1
           glyph ? CLUB.black.bold : 'Clubs'
         when 2
@@ -55,8 +59,6 @@ module RubyCards
           glyph ? HEART.red : 'Hearts'
         when 4
           glyph ? SPADE.black.bold : 'Spades'
-        else 
-          'Joker'
       end
     end
 
