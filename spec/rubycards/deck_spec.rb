@@ -4,6 +4,9 @@ include RubyCards
 
 describe Deck do
   subject(:deck) { Deck.new }
+  subject(:joker_deck) { Deck.new(number_jokers: 2) }  
+  subject(:aces_high_deck) { Deck.new(aces_high: true) }   
+  subject(:aces_low_deck) { Deck.new(aces_high: false) }     
 
   describe '#initialize' do
     it 'initializes 52 cards' do
@@ -19,6 +22,22 @@ describe Deck do
       expect(suits.count).to be 4
     end
 
+    it "should include the correct number of jokers" do 
+      expect(joker_deck.cards.count).to eq 54
+      jokers = joker_deck.cards.select {|c| c.suit == 'Joker'}
+      expect(jokers.count).to eq 2
+    end
+
+    it "should set aces high" do 
+      aces = aces_high_deck.cards.select {|c| c.rank == 'Ace'}
+      expect(aces[0].to_i).to eq 14
+    end
+
+    it "should set aces low" do 
+      aces = aces_low_deck.cards.select {|c| c.rank == 'Ace'}
+      expect(aces[0].to_i).to eq 1
+    end
+
     ["Clubs", "Diamonds", "Hearts", "Spades"].each do |suit|
       it "initializes 13 cards for #{suit}" do
         cards = deck.cards.select { |c| c.suit == suit }
@@ -29,6 +48,7 @@ describe Deck do
         cards = deck.cards.select { |c| c.suit == suit }
         expect(cards.group_by { |x| x.rank }.count).to be 13
       end
+
     end
   end
 
@@ -78,7 +98,6 @@ describe Deck do
 
       it 'returns itself' do
         expect(deck).to eq deck.cut!(0)
-        should == deck.cut!(0)
       end
 
       it 'cuts the cards' do

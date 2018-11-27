@@ -37,7 +37,8 @@ describe Card do
     let (:king) { Card.new('King','Clubs') }
     let (:queen) { Card.new('Queen','Clubs') }
     let (:jack) { Card.new('Jack','Clubs') }
-    let (:ace) { Card.new('Ace','Clubs') }
+    let (:high_ace) { Card.new('Ace','Clubs', aces_high: true) }
+    let (:low_ace) { Card.new('Ace','Clubs', aces_high: false) } 
     let (:c2) { Card.new(2,'Diamonds') }
     let (:c2_heart) { Card.new(2,'Hearts') }
     let (:c4) { Card.new(4,'Spades') }
@@ -46,14 +47,17 @@ describe Card do
       expect(king).to be > queen
       expect(king).to be > jack
       expect(king).to eq king
-      expect(king).to be < ace
+      expect(king).to be < high_ace
+      expect(king).to be > low_ace      
+
+      expect(low_ace).to be < c2_heart
 
       expect(jack).not_to be > queen
-      expect(jack).not_to be > ace
+      expect(jack).not_to be > high_ace
       expect(jack).to be < queen
 
-      expect(ace).not_to be < queen
-      expect(ace).to be > c4
+      expect(high_ace).not_to be < queen
+      expect(high_ace).to be > c4
 
       expect(c2).to be < c4
       expect(c2_heart).to eq c2
@@ -108,23 +112,15 @@ describe Card do
     end
   end
 
-  describe '#garbage' do
-    it 'should set a garbage rank to nil' do
-      runt_card1 = Card.new(0, 'Diamonds')
-      runt_card2 = Card.new(11, 'Diamonds')
-      runt_card3 = Card.new(-6, 'Spades')
+  describe '#joker' do
+    it 'should set suit and rank correctly' do
+      joker1 = Card.new('Joker', 'Joker')
+      joker2 = Card.new(nil,nil)
 
-      expect(runt_card1.rank).to be_nil
-      expect(runt_card2.rank).to be_nil
-      expect(runt_card3.rank).to be_nil
-    end
-
-    it 'should set a garbage suit to nil' do
-      runt_card1 = Card.new(7, '')
-      runt_card2 = Card.new('Ace', 'Garbage')
-
-      expect(runt_card1.suit).to be_nil
-      expect(runt_card2.suit).to be_nil
+      expect(joker1.suit).to match 'Joker'
+      expect(joker2.suit).to match 'Joker'
+      expect(joker2.rank).to match 'Joker'
+      expect(joker2.rank(true)).to match 'JR'
     end
   end
 

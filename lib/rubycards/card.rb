@@ -18,13 +18,11 @@ module RubyCards
     # @param rank [String, Integer] The rank of the card
     # @param suit [String] The suit of the card
     # options: 
-    #  aces_high 
-    #  joker 
+    #  aces_high [Boolean] 
     # @return [Card] The constructed card
-    def initialize(rank = 'Ace', suit = 'Spades', aces_high: true, joker: false)
-      @rank = joker ? 0 : rank_to_i(rank)
-      @suit = joker ? nil : suit_to_i(suit)
-      @aces_high = aces_high
+    def initialize(rank = 'Ace', suit = 'Spades', aces_high: true)
+      @rank = rank_to_i(rank, aces_high)
+      @suit = suit_to_i(suit)
     end
 
     # Returns the rank of the card with an optional `short` parameter
@@ -36,7 +34,8 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        h = { 0 => 'Joker', 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
+        return '' if @rank == 0 
+        h = { 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
         h[@rank] && short ? h[@rank][0] : h[@rank]
       end
     end
@@ -140,13 +139,14 @@ module RubyCards
     # Converts the string representation of a rank to an integer.
     #
     # @param rank [String] The rank of the card as a string
+    # @param aces_high [Boolean] Whether aces are ranked as 1 or 14
     # @return [Integer] An integer representation of the rank (ordered)
-    def rank_to_i(rank)
-      ace_rank = @aces_high ? 14 : 1
+    def rank_to_i(rank, aces_high)
       case rank.to_s
-        when /^(a|ace)/i;   ace_rank
+        when /^(a|ace)/i;   aces_high ? 14 : 1
         when /^(k|king)/i;  13
         when /^(q|queen)/i; 12
+        when /^(joker)/i;   0
         when /^(j|jack)/i;  11
         when '10';          10
         when '2'..'9';      rank
