@@ -17,10 +17,13 @@ module RubyCards
     #
     # @param rank [String, Integer] The rank of the card
     # @param suit [String] The suit of the card
+    # options: 
+    #  aces_high 
     # @return [Card] The constructed card
-    def initialize(rank = 'Ace', suit = 'Spades')
+    def initialize(rank = 'Ace', suit = 'Spades', aces_high: true)
       @rank = rank_to_i(rank)
       @suit = suit_to_i(suit)
+      @aces_high = aces_high
     end
 
     # Returns the rank of the card with an optional `short` parameter
@@ -32,7 +35,7 @@ module RubyCards
       if (2..10) === @rank
         @rank.to_s
       else
-        h = { 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
+        h = { 1 => 'Ace', 11 => 'Jack', 12 => 'Queen', 13 => 'King', 14 => 'Ace' }
         h[@rank] && short ? h[@rank][0] : h[@rank]
       end
     end
@@ -136,8 +139,9 @@ module RubyCards
     # @param rank [String] The rank of the card as a string
     # @return [Integer] An integer representation of the rank (ordered)
     def rank_to_i(rank)
+      ace_rank = @aces_high ? 14 : 1
       case rank.to_s
-        when /^(a|ace)/i;   14
+        when /^(a|ace)/i;   ace_rank
         when /^(k|king)/i;  13
         when /^(q|queen)/i; 12
         when /^(j|jack)/i;  11
